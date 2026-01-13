@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ERPNext Project Estimator</title>
+
+<style>
+:root {
+    --primary: #2563eb;
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* Layout */
+.app {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    min-height: 100vh;
+}
+
+/* LEFT: Modules */
+.modules {
+    padding: 40px;
+}
+
+.modules h1 {
+    margin-bottom: 6px;
+}
+
+.modules p {
+    color: var(--muted);
+    margin-bottom: 30px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 22px;
+}
+
+/* Module Card */
+.card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 22px;
+    cursor: pointer;
+    transition: 0.25s;
+    border: 2px solid transparent;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.card.active {
+    border-color: var(--primary);
+    background: #f0f6ff;
+}
+
+.card input {
+    display: none;
+}
+
+.card h3 {
+    margin: 0 0 6px;
+    font-size: 18px;
+}
+
+.card span {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+/* RIGHT: Estimate Panel */
+.sidebar {
+    background: #0f172a;
+    color: #ffffff;
+    padding: 30px 28px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+
+.metric {
+    margin-bottom: 25px;
+}
+
+.metric label {
+    font-size: 13px;
+    color: #c7d2fe;
+}
+
+.metric .value {
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+.divider {
+    height: 1px;
+    background: rgba(255,255,255,0.15);
+    margin: 20px 0;
+}
+
+.selected {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.selected h4 {
+    margin-bottom: 12px;
+    font-size: 15px;
+    color: #c7d2fe;
+}
+
+.selected ul {
+    padding-left: 18px;
+    margin: 0;
+    font-size: 14px;
+}
+
+.selected li {
+    margin-bottom: 6px;
+}
+
+.footer-note {
+    font-size: 12px;
+    color: #cbd5f5;
+    margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- LEFT SIDE -->
+    <div class="modules">
+        <h1>ERPNext Project Estimator</h1>
+        <p>Select the modules you want to implement. Your estimate updates in real time.</p>
+
+        <div class="grid">
+
+            <label class="card">
+                <input type="checkbox" data-name="Core Setup" data-cost="150000" data-hours="80">
+                <h3>Core Setup</h3>
+                <span>Company setup, masters, roles, workflows</span>
+            </label>
+
+            <label class="card">
+                <input type="checkbox" data-name="Sales" data-cost="200000" data-hours="100">
+                <h3>Sales</h3>
+                <span>Quotations, orders, invoicing, returns</span>
+            </label>
+
+            <label class="card">
+                <input type="checkbox" data-name="Purchase" data-cost="300000" data-hours="120">
+                <h3>Purchase</h3>
+                <span>PR, PO, supplier billing & approvals</span>
+            </label>
+
+            <label class="card">
+                <input type="checkbox" data-name="Inventory" data-cost="250000" data-hours="120">
+                <h3>Inventory</h3>
+                <span>Warehouses, stock, serials & batches</span>
+            </label>
+
+            <label class="card">
+                <input type="checkbox" data-name="Accounting" data-cost="300000" data-hours="140">
+                <h3>Accounting</h3>
+                <span>GL, AR/AP, taxes, financial reports</span>
+            </label>
+
+            <label class="card">
+                <input type="checkbox" data-name="Manufacturing" data-cost="350000" data-hours="160">
+                <h3>Manufacturing</h3>
+                <span>BOM, work orders, planning</span>
+            </label>
+
+            <label class="card">
+                <input type="checkbox" data-name="CRM" data-cost="200000" data-hours="100">
+                <h3>CRM</h3>
+                <span>Leads, pipeline, opportunities</span>
+            </label>
+
+            <label class="card">
+                <input type="checkbox" data-name="HR & Payroll" data-cost="250000" data-hours="120">
+                <h3>HR & Payroll</h3>
+                <span>Attendance, leave, salary</span>
+            </label>
+
+            <label class="card">
+                <input type="checkbox" data-name="Projects" data-cost="200000" data-hours="90">
+                <h3>Projects</h3>
+                <span>Tasks, costing, billing</span>
+            </label>
+
+            <label class="card">
+                <input type="checkbox" data-name="Assets" data-cost="250000" data-hours="110">
+                <h3>Assets</h3>
+                <span>Asset lifecycle & depreciation</span>
+            </label>
+
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <aside class="sidebar">
+        <h2>Project Estimate</h2>
+
+        <div class="metric">
+            <label>Total Estimated Cost</label>
+            <div class="value">₹ <span id="totalCost">0</span></div>
+        </div>
+
+        <div class="metric">
+            <label>Total Estimated Effort</label>
+            <div class="value"><span id="totalHours">0</span> hrs</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="selected">
+            <h4>Selected Modules</h4>
+            <ul id="selectedList"></ul>
+        </div>
+
+        <div class="footer-note">
+            Indicative estimates for standard ERPNext implementation.
+            Customizations & integrations may vary.
+        </div>
+    </aside>
+
+</div>
+
+<script>
+const cards = document.querySelectorAll(".card");
+
+cards.forEach(card => {
+    card.addEventListener("click", () => {
+        const cb = card.querySelector("input");
+        cb.checked = !cb.checked;
+        card.classList.toggle("active", cb.checked);
+        calculate();
+    });
+});
+
+function calculate() {
+    let cost = 0;
+    let hours = 0;
+    const list = document.getElementById("selectedList");
+    list.innerHTML = "";
+
+    document.querySelectorAll("input:checked").forEach(cb => {
+        cost += Number(cb.dataset.cost);
+        hours += Number(cb.dataset.hours);
+
+        const li = document.createElement("li");
+        li.textContent = cb.dataset.name;
+        list.appendChild(li);
+    });
+
+    document.getElementById("totalCost").innerText =
+        cost.toLocaleString("en-IN");
+
+    document.getElementById("totalHours").innerText = hours;
+}
+</script>
+
+</body>
+</html>
